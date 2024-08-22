@@ -1,0 +1,34 @@
+[gd_scene load_steps=5 format=3 uid="uid://b7u1ivomvj0rk"]
+
+[ext_resource type="Script" path="res://Levels/Portal.gd" id="1_thjii"]
+[ext_resource type="PackedScene" uid="uid://c5gop5y7jt6pa" path="res://Player/win_game_menu.tscn" id="2_m30d7"]
+
+[sub_resource type="SphereMesh" id="SphereMesh_kc460"]
+flip_faces = true
+radius = 0.7
+height = 2.0
+radial_segments = 424
+rings = 1
+
+[sub_resource type="SphereShape3D" id="SphereShape3D_64jh5"]
+radius = 0.9
+
+[node name="Portal" type="Area3D" node_paths=PackedStringArray("game_over_menu")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+script = ExtResource("1_thjii")
+game_over_menu = NodePath("WinGameMenu")
+file_path = "res://Levels/Sandbox.tscn"
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0, 2.08165e-12)
+mesh = SubResource("SphereMesh_kc460")
+skeleton = NodePath("")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 2.08165e-12, 0, 2.08165e-12)
+shape = SubResource("SphereShape3D_64jh5")
+
+[node name="WinGameMenu" parent="." instance=ExtResource("2_m30d7")]
+visible = false
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

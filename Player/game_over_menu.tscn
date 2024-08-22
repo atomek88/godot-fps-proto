@@ -1,0 +1,95 @@
+[gd_scene load_steps=9 format=3 uid="uid://yrb0d5uuak5i"]
+
+[ext_resource type="FontFile" uid="uid://bf71mrsd5tovc" path="res://Assets/Staatliches/Staatliches-Regular.ttf" id="1_x82cd"]
+[ext_resource type="Shader" uid="uid://cjfrcfye7o7tl" path="res://Player/game_over_menu.tres" id="3_7dtch"]
+
+[sub_resource type="CanvasItemMaterial" id="CanvasItemMaterial_sav8q"]
+
+[sub_resource type="Theme" id="Theme_ij1jw"]
+default_font = ExtResource("1_x82cd")
+default_font_size = 64
+
+[sub_resource type="GDScript" id="GDScript_svlnd"]
+script/source = "extends Control
+
+func game_over() -> void:
+	get_tree().paused = true
+	visible = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	pass
+
+func win_game() -> void:
+	get_tree().paused = true
+	visible = true
+	Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	pass
+
+func _on_restart_button_pressed() -> void:
+
+	get_tree().paused = false
+	get_tree().reload_current_scene()
+
+
+func _on_quit_button_pressed() -> void:
+	get_tree().quit()
+"
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nqrl0"]
+shader = ExtResource("3_7dtch")
+
+[sub_resource type="PlaceholderTexture2D" id="PlaceholderTexture2D_41lns"]
+
+[sub_resource type="LabelSettings" id="LabelSettings_swn8o"]
+font_size = 76
+font_color = Color(0.765298, 0.831681, 0.831294, 1)
+
+[node name="GameOverMenu" type="Control"]
+material = SubResource("CanvasItemMaterial_sav8q")
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = SubResource("Theme_ij1jw")
+script = SubResource("GDScript_svlnd")
+
+[node name="BackgroundBlur" type="TextureRect" parent="."]
+material = SubResource("ShaderMaterial_nqrl0")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+texture = SubResource("PlaceholderTexture2D_41lns")
+
+[node name="CenterContainer" type="CenterContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="CenterContainer"]
+custom_minimum_size = Vector2(500, 2.08165e-12)
+layout_mode = 2
+
+[node name="Label" type="Label" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "GAME OVER"
+label_settings = SubResource("LabelSettings_swn8o")
+horizontal_alignment = 1
+
+[node name="RestartButton" type="Button" parent="CenterContainer/VBoxContainer"]
+layout_mode = 2
+text = "RESTART"
+
+[node name="QuitButton" type="Button" parent="CenterContainer/VBoxContainer"]
+process_mode = 3
+layout_mode = 2
+text = "IM DONE"
+
+[connection signal="pressed" from="CenterContainer/VBoxContainer/RestartButton" to="." method="_on_restart_button_pressed"]
+[connection signal="pressed" from="CenterContainer/VBoxContainer/QuitButton" to="." method="_on_quit_button_pressed"]
